@@ -1,0 +1,19 @@
+{
+  "project_id": "I5NIj6Y1",
+  "slug": "feathermorphclient",
+  "version_id": "uj2MAzVE",
+  "version_number": "0.17.0-beta.1",
+  "side": "both",
+  "file": {
+    "url": "https://cdn.modrinth.com/data/I5NIj6Y1/versions/uj2MAzVE/feathermorph_client-fabric-1.21.11-0.17.0-beta.1.jar",
+    "filename": "feathermorph_client-fabric-1.21.11-0.17.0-beta.1.jar",
+    "sha512": "8372f74dfd0d28d9c11f2fcca647dad7f14b593f97669d567a3e6095967a2cee3d215e9b2849cf50796def7c8b8bcdc2b996855b0f2a5d10265660d10fb995e8",
+    "sha1": "e69410399bb00f718d14e347ca8fa668eca09347",
+    "size": 822654
+  },
+  "explicit": true,
+  "dependencies": [
+    "9s6osm5g",
+    "P7dR8mSH"
+  ]
+}
