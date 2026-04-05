@@ -1,0 +1,16 @@
+{
+  "project_id": "Wb5oqrBJ",
+  "slug": "chat-heads",
+  "version_id": "AAR2TTo3",
+  "version_number": "1.2.1",
+  "side": "client",
+  "file": {
+    "url": "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/AAR2TTo3/chat_heads-1.2.1-fabric-1.21.11.jar",
+    "filename": "chat_heads-1.2.1-fabric-1.21.11.jar",
+    "sha512": "c3f7f8e3f74aa8e20b537bc255b4b196fdb1b1cc714e6b6d4775251b01a810aaa9704845a525f96461db80eca8d0da1ec79fb2c24c95e5335b9c15a056219ddb",
+    "sha1": "17ba8126f1953fc9eb059ca8c82b5b72b3f907d3",
+    "size": 92750
+  },
+  "explicit": true,
+  "dependencies": []
+}
