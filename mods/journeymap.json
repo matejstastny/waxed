@@ -1,0 +1,16 @@
+{
+  "project_id": "lfHFW1mp",
+  "slug": "journeymap",
+  "version_id": "ajOMv0sc",
+  "version_number": "1.21.11-6.0.0-beta.63+fabric",
+  "side": "both",
+  "file": {
+    "url": "https://cdn.modrinth.com/data/lfHFW1mp/versions/ajOMv0sc/journeymap-fabric-1.21.11-6.0.0-beta.63.jar",
+    "filename": "journeymap-fabric-1.21.11-6.0.0-beta.63.jar",
+    "sha512": "c56b5a7d78d1a6fb2c0c5a27119305ac5b20c5d0bf30d1ff4135d03da06739bf761da180e32e34bc86510561a14e4e47cc74e660d97f2e46b5fd09260f7a95e1",
+    "sha1": "d46e3a099264da24da2c3534f2379b6b908ed75a",
+    "size": 3704086
+  },
+  "explicit": true,
+  "dependencies": []
+}
