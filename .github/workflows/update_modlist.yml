@@ -1,0 +1,79 @@
+name: Update modlist
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Azalea
+        uses: threeal/pipx-install-action@v1.0.0
+        with:
+          packages: git+https://github.com/matejstastny/azalea.git
+
+      - name: Update modlist
+        run: azalea readme
+
+      - name: Read azalea.json
+        id: azalea
+        run: |
+          mc=$(jq -r .minecraft_version azalea.json)
+          fabric=$(jq -r .loader_version azalea.json)
+          echo "minecraft=$mc" >> $GITHUB_OUTPUT
+          echo "fabric=$fabric" >> $GITHUB_OUTPUT
+
+      - name: Update README badges
+        run: |
+          if grep -q "GITHUB_TAGS_START" README.md && grep -q "GITHUB_TAGS_END" README.md; then
+            mc="${{ steps.azalea.outputs.minecraft }}"
+            fabric="${{ steps.azalea.outputs.fabric }}"
+            mc_dash=${mc//./-}
+
+            NEW_LINE="[![Fabric](https://img.shields.io/badge/Fabric-${fabric}-blueviolet?logo=fabric&logoColor=white)](https://fabricmc.net/) [![Minecraft](https://img.shields.io/badge/Minecraft-${mc}-green?logo=minecraft)](https://www.minecraft.net/en-us/article/minecraft-java-edition-${mc_dash}) [![Modrinth](https://img.shields.io/badge/Modrinth-Published-5da545?logo=modrinth&logoColor=white)](https://modrinth.com/modpack/starlightmodpack) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/matejstastny/starlight)"
+
+            awk -v repl="$NEW_LINE" '
+              /<!-- GITHUB_TAGS_START -->/ {print; print repl; skip=1; next}
+              /<!-- GITHUB_TAGS_END -->/ {skip=0}
+              !skip
+            ' README.md > README.tmp && mv README.tmp README.md
+          else
+            echo "Markers not found, skipping README badge update"
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Prettier
+        run: npm install -g prettier
+
+      - name: Format README
+        run: prettier --write README.md
+
+      - name: Commit changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            git config user.name "github-actions"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "chore: update modlist"
+            git push origin HEAD:main
+          else
+            echo "No changes to commit"
+          fi

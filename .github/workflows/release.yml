@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Python dependencies
+        run: pip install requests
+
+      - name: Install Azalea
+        uses: threeal/pipx-install-action@v1.0.0
+        with:
+          packages: git+https://github.com/matejstastny/azalea.git
+
+      - name: Validate release versions
+        id: validate
+        run: python .github/scripts/validate_release.py
+
+      - name: Build mrpack
+        run: azalea export
+
+      - name: Get mrpack filename
+        id: pack
+        run: |
+          FILE=$(ls dist/*.mrpack)
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+          echo "Found pack: $FILE"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Starlight ${{ steps.validate.outputs.version }} for MC ${{ steps.validate.outputs.minecraft }}
+          generate_release_notes: true
+          body_path: CHANGELOG.md
+          files: |
+            ${{ steps.pack.outputs.file }}
+
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: kWqlGiOE
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: ${{ steps.pack.outputs.file }}
+
+          name: Starlight ${{ steps.validate.outputs.version }} for MC ${{ steps.validate.outputs.minecraft }}
+          version: ${{ github.ref_name }}
+          version-type: release
+          changelog-file: CHANGELOG.md
+
+          loaders: fabric
+          game-versions: ${{ steps.validate.outputs.minecraft }}
+          game-version-filter: none
+          fail-mode: fail
