@@ -47,25 +47,25 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: Starlight ${{ steps.validate.outputs.version }} for MC ${{ steps.validate.outputs.minecraft }}
+          name: Waxed ${{ steps.validate.outputs.version }} for MC ${{ steps.validate.outputs.minecraft }}
           generate_release_notes: true
           body_path: CHANGELOG.md
           files: |
             ${{ steps.pack.outputs.file }}
 
-      - name: Publish to Modrinth
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          modrinth-id: kWqlGiOE
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          files: ${{ steps.pack.outputs.file }}
+    #   - name: Publish to Modrinth
+    #     uses: Kir-Antipov/mc-publish@v3.3
+    #     with:
+    #       modrinth-id: TODO
+    #       modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+    #       files: ${{ steps.pack.outputs.file }}
 
-          name: Starlight ${{ steps.validate.outputs.version }} for MC ${{ steps.validate.outputs.minecraft }}
-          version: ${{ github.ref_name }}
-          version-type: release
-          changelog-file: CHANGELOG.md
+    #       name: Waxed ${{ steps.validate.outputs.version }} for MC ${{ steps.validate.outputs.minecraft }}
+    #       version: ${{ github.ref_name }}
+    #       version-type: release
+    #       changelog-file: CHANGELOG.md
 
-          loaders: fabric
-          game-versions: ${{ steps.validate.outputs.minecraft }}
-          game-version-filter: none
-          fail-mode: fail
+    #       loaders: fabric
+    #       game-versions: ${{ steps.validate.outputs.minecraft }}
+    #       game-version-filter: none
+    #       fail-mode: fail
